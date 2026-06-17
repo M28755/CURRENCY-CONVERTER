@@ -5,13 +5,220 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FX Checker - Currency Converter</title>
+
+    <!-- font awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+        integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- google fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap"
+        rel="stylesheet">
+
     <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
+    <div class="app-container">
+        <!-- header -->
+        <header class="app-header">
+            <div class="top-header">
+                <!-- left side -->
+                <div class="left-side">
+                    <div class="block-btn"></div>
+                    <span>FX_CHECKER</span>
+                </div>
+                <!-- right side -->
+                <div class="right-side">
+                    <div class="total-currency">
+                        <span>55</span>
+                        <span>CURRENCY</span>
+                    </div>
+
+                    <div class="End-of-day">
+                        <div class="dot"></div>
+                        <span>EOD</span>
+
+                    </div>
+
+                    <div class="bank">
+                        <div class="dot"></div>
+                        <p title="European Central Bank">ECB</p>
+                        <span class="data">DATA</span>
+                    </div>
+
+                </div>
+            </div>
+            <div class="bottom-header">
+                <div class="live-markets">
+                    <div class="live-dot"></div>
+                    <span>LIVE MARKETS</span>
+
+                </div>
+                <div class="ticker-item"></div>
+            </div>
+
+        </header>
+        <main>
+            <!-- Static converter Section -->
+            <section class="converter-card">
+                <h2 class="section-title">CHECK THE RATE</h2>
+                <div class="converter-container">
+                    <div class="converter-row">
+                        <!-- left input part(Send) -->
+                        <div class="currency-input">
+                            <label for="amount-input">SEND</label>
+                            <div class="currency-input-container">
+                                <input type="number" placeholder="1000" id="amount-input" class="amount-input">
+                                <button class="currency-select-btn" id="from-btn">
+                                    <span class="flag"></span>
+                                    <span class="currency-code">USD</span>
+                                    <span class="dropdown-arrow">
+                                        <i class="fa fa-chevron-down"></i>
+                                    </span>
+
+                                </button>
+                            </div>
+
+                        </div>
+
+                        <!-- swapping button -->
+                        <button class="swap-btn" title="Swap Currencies">
+                            <svg xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 -960 960 960" width="40px"
+                                fill="#e3e3e3">
+                                <path
+                                    d="M274-120 80-314l194.67-194.67 47 46.67L207-347.33h633v66.66H207l114 114L274-120Zm412-331.33L639-498l114-114H120v-66.67h633L638.33-793.33l47-46.67L880-645.33l-194 194Z" />
+                            </svg>
+                        </button>
+
+                        <!-- right input part(RECEIVE) -->
+                        <div class="currency-input">
+                            <label for="amount-input">RECEIVE</label>
+                            <div class="currency-input-container">
+                                <input type="number" placeholder="853.02" id="amount-input"
+                                    class=" receive amount-input">
+                                <button class="currency-select-btn" id="from-btn">
+                                    <span class="flag"></span>
+                                    <span class="currency-code">EUR</span>
+                                    <span class="dropdown-arrow">
+                                        <i class="fa fa-chevron-down"></i>
+                                    </span>
+
+                                </button>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="converter-footer">
+                        <p class="rate-subtext">1 USD = 0.8530 EUR</p>
+                        <div class="action-btns">
+                            <button class="action-btn favorite-btn">
+                                <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960"
+                                    width="20px" fill="#000000">
+                                    <path
+                                        d="M333.33-259 480-347l146.67 89-39-166.67 129-112-170-15L480-709l-66.67 156.33-170 15 129 112.34-39 166.33ZM233-120l65-281L80-590l288-25 112-265 112 265 288 25-218 189 65 281-247-149-247 149Zm247-353.33Z" />
+                                </svg> Favorite
+                            </button>
+                            <button class="action-btn log-btn">
+                                <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960"
+                                    width="20px" fill="#000000">
+                                    <path d="M444-144v-300H144v-72h300v-300h72v300h300v72H516v300h-72Z" />
+                                </svg>Log Conversion
+                            </button>
+
+                        </div>
+                    </div>
+                </div>
+
+
+            </section>
+            <!-- Navigation tabs -->
+            <nav class="tabs-nav">
+                <button class="tab-btn active">HISTORY</button>
+                <button class="tab-btn">COMPARE</button>
+                <button class="tab-btn">FAVORITE <span class="badge">10</span></button>
+                <button class="tab-btn">LOG <span class="badge">8</span></button>
+
+            </nav>
+            <!-- Hestory section -->
+            <section class="history-view active-view">
+                <div class="stats-grid">
+                    <div class="stat-box">
+                        <span class="stat-label">OPEN</span>
+                        <span class="stat-value"></span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-label">LAST</span>
+                        <span class="stat-value"></span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-label">CHANGE</span>
+                        <span class="stat-value"></span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-label">% CHANGE</span>
+                        <span class="stat-value"></span>
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <canvas id="history-chart"></canvas>
+                </div>
+
+            </section>
+
+            <!-- Currency Picker Model -->
+            <div class="model-overlay" id="currency-model">
+                <div class="model-content">
+                    <div class="model-header">
+                        <input type="text" id="search-input" placeholder="Search by code or name(e.g USD , Euro)..."
+                            id="search-input">
+
+                        <button class="close-btn" id="close-btn">&times;</button>
+                    </div>
+                    <div class="currency-list-container">
+                        <h4>Popular Currencies</h4>
+
+                        <div class="currency-group" id="popular-currencies">
+                            <div class="currency-row selected">
+                                <span class="flag"></span>
+                                <div class="currency-info">
+                                    <span class="code">USD</span>
+                                    <span class="name">United States Dollar</span>
+                                </div>
+                                <span class="check-mark">
+                                    <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960"
+                                        width="20px" fill="#000000">
+                                        <path d="M389-267 195-460l51-52 143 143 325-324 51 51-376 375Z" />
+                                    </svg>
+                                </span>
+                            </div>
+                        </div>
+
+                        <h4>Other Currencies</h4>
+                        <div class="currency-group" id="other-currencies">
+                            <div class="currency-row">
+                                <span class="flag"></span>
+                                <div class="currency-info">
+                                    <span class="code">JPY</span>
+                                    <span class="name">Japanese Yen</span>
+                                </div>
+                                <span class="check-mark">
+                                    <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960"
+                                        width="20px" fill="#000000">
+                                        <path d="M389-267 195-460l51-52 143 143 325-324 51 51-376 375Z" />
+                                    </svg>
+                                </span>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
 
 
     <!-- Chart.js Library -->
