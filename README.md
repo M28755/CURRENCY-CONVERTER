@@ -1,10 +1,10 @@
-# FX Checker � Currency Converter
+# FX Checker  Currency Converter
 
 A sleek, dark-themed currency converter web app built for a hackathon. It fetches real-time and historical exchange rates from the **Frankfurter API** and presents them in a modern, minimal UI.
 
 ---
 
-## ?? Features
+##  Features
 
 - **Real-Time Currency Conversion**  Fetches live exchange rates on the fly
 - **Bidirectional Input**  Type in either the Send or Receive field and the other updates automatically
@@ -21,7 +21,7 @@ A sleek, dark-themed currency converter web app built for a hackathon. It fetche
 
 ---
 
-## ?? Project Structure
+##  Project Structure
 
 ```
 CURRENCY-CONVERTER/
@@ -35,7 +35,7 @@ CURRENCY-CONVERTER/
 
 ---
 
-## ?? App Layout
+## App Layout
 
 ### Header
 - **FX_CHECKER** logo with lime-green block icon
@@ -66,12 +66,12 @@ CURRENCY-CONVERTER/
 | LOG      | Recent conversion log with badge count  |
 
 ### History View (Active Tab)
-- **Stats Grid:** OPEN � LAST � CHANGE � % CHANGE (color-coded green/red)
+- **Stats Grid:** OPEN | LAST | CHANGE |% CHANGE (color-coded green/red)
 - **Line Chart:** 30-day rate history using Chart.js
 
 ---
 
-## ?? Tech Stack
+##  Tech Stack
 
 | Layer    | Technology                                                             |
 |----------|------------------------------------------------------------------------|
@@ -85,7 +85,7 @@ CURRENCY-CONVERTER/
 
 ---
 
-## ?? API Reference
+##  API Reference
 
 **Base URL:** `https://corsproxy.io/?url=https://api.frankfurter.dev/v2`
 
@@ -100,7 +100,7 @@ CURRENCY-CONVERTER/
 
 ---
 
-## ?? Design System
+##  Design System
 
 Defined in `styles.css` using CSS custom properties:
 
@@ -122,7 +122,7 @@ Defined in `styles.css` using CSS custom properties:
 
 ---
 
-## ?? State & Storage
+##  State & Storage
 
 ### In-memory state (`script.js`)
 
@@ -131,7 +131,7 @@ Defined in `styles.css` using CSS custom properties:
 | `currentFromCurrency` | `'USD'`  | The base currency                             |
 | `currentToCurrency`   | `'EUR'`  | The target currency                           |
 | `currentExchangeRate` | `0`      | Latest fetched rate                           |
-| `activePickerTarget`  | `null`   | `'from'` or `'to'` � which dropdown is open  |
+| `activePickerTarget`  | `null`   | `'from'` or `'to'`  which dropdown is open  |
 | `historyChart`        | `null`   | Chart.js instance reference                   |
 
 ### LocalStorage keys
@@ -143,7 +143,7 @@ Defined in `styles.css` using CSS custom properties:
 
 ---
 
-## ?? Four-Phase Roadmap
+##  Four-Phase Roadmap
 
 | Phase | Status          | Description                              |
 |-------|-----------------|------------------------------------------|
@@ -154,7 +154,7 @@ Defined in `styles.css` using CSS custom properties:
 
 ---
 
-## ?? Running Locally
+##  Running Locally
 
 No build step required  pure HTML/CSS/JS.
 
@@ -165,7 +165,7 @@ No build step required  pure HTML/CSS/JS.
 
 ---
 
-## ?? Algorithm Reference
+##  Algorithm Reference
 
 See [`Algorithm.md`](./Algorithm.md) for a full pseudocode walkthrough of:
 - App state initialisation
