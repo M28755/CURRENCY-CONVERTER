@@ -1,4 +1,4 @@
-const API_BASE_URL = "https://corsproxy.io/?url=https://api.frankfurter.dev/v2"
+const API_BASE_URL = "https://api.frankfurter.dev/v2"
 
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -190,6 +190,7 @@ document.addEventListener('DOMContentLoaded', () => {
         searchbar.value = '';
         await fetchLiveRate()
         await fetchHistoryData()
+        await fetchCompareRates()
 
 
     }
@@ -204,7 +205,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function updateButtonUI(button, code) {
         const currency = Currencies.find(c => c.code === code)
         if (currency) {
-            console.log(currency.code)
+            //  console.log(currency.code)
         }
 
         button.querySelector('.currency-code').textContent = code || ''
@@ -300,10 +301,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const data = await res.json()
 
-            console.log(data)
+            //   console.log(data)
 
             currentExchangeRate = data.rate;
-            console.log(currentExchangeRate)
+            // console.log(currentExchangeRate)
 
             rateSubtext.textContent = `1 ${currentFromCurrency} = ${currentExchangeRate.toFixed(5)} ${currentToCurrency}`;
 
@@ -349,7 +350,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         }) */
 
-        console.log(`${formattedStartDate} --- ${formattedEndDate}`)
+        //  console.log(`${formattedStartDate} --- ${formattedEndDate}`)
         try {
             const res = await fetch(`${API_BASE_URL}/rates?from=${formattedStartDate}&to=${formattedEndDate}&base=${currentFromCurrency}&quotes=${currentToCurrency}`)
 
@@ -396,7 +397,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Calculate 30-day change for the chart header
         const firstRate = data[0]
-        console.log(firstRate)
+        //console.log(firstRate)
         const percentageChange = (((latestRate - firstRate) / firstRate) * 100).toFixed(2)
         //console.log(`+${percentageChange}`)
         const ChangeElement = document.getElementById('chart-change')
@@ -509,10 +510,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const data = await response.json()
 
-            // data.rate is a plain NUMBER from the API: { rate: 0.87044 }
             const openRate = data.rate || currentExchangeRate;
 
-            const change = currentExchangeRate - openRate;             // keep as number for math
+            const change = currentExchangeRate - openRate;
             const percentChange = openRate > 0 ? (change / openRate) * 100 : 0;
 
             document.getElementById('open-stat').textContent = openRate.toFixed(5);
@@ -565,7 +565,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     }
     /* Navigation tabs */
-    // --- 11. Tab Navigation Toggle ---
     const tabButtons = document.querySelectorAll('.tab-btn');
     const viewSections = document.querySelectorAll('.view');
 
@@ -591,6 +590,105 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    /* =============================
+    COMPARE CURRENCIES
+    ===========================*/
+    const compareListEl = document.getElementById('compare-list');
+
+    const compareTargets = ['EUR', 'GBP', 'JPY', 'AUD', 'CAD', 'CHF', 'CNY', 'INR'];
+
+    async function fetchCompareRates() {
+        const validTargets = compareTargets.filter(c => c !== currentFromCurrency);
+        const amount = parseFloat(amountInput.value) || 0;
+
+        // Update the Header text dynamically
+        document.getElementById('compare-base-amount').textContent = amount.toLocaleString();
+        document.getElementById('compare-base-currency').textContent = currentFromCurrency;
+
+        compareListEl.innerHTML = '<p style="color: var(--neutral-500); text-align: center;">Loading rates...</p>';
+
+        try {
+            // Fetch all currency rates simultaneously using Promise.all
+            const fetchPromises = validTargets.map(code => {
+                const url = `https://api.frankfurter.dev/v2/rate/${currentFromCurrency}/${code}`;
+                return fetch(url)
+                    .then(res => {
+                        if (!res.ok) throw new Error(`Failed for ${code}`);
+                        return res.json().then(d => ({ code, rate: d.rate })); // Extract d.rate
+                    });
+            });
+
+            // Wait for all fetches to finish
+            const results = await Promise.all(fetchPromises);
+
+            compareListEl.innerHTML = '';
+
+            results.forEach(({ code, rate }) => {
+                if (!rate) return;
+
+                const convertedAmount = (amount * rate).toLocaleString(undefined, {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                });
+
+
+                const currency = Currencies.find(c => c.code === code);
+                const flag = currency ? currency.flag : '';
+                const name = currency ? currency.name : '';
+
+                const pairString = `${currentFromCurrency}/${code}`;
+                const isPinned = favorites.includes(pairString);
+
+                const row = document.createElement('div');
+                row.className = `compare-row ${isPinned ? 'pinned' : ''}`;
+                row.innerHTML = `
+                <div class="compare-row-left">
+                    <span class="flag">${flag}</span>
+                    <div class="compare-currency-info">
+                        <span class="code">${code}</span>
+                        <span class="name">${name}</span>
+                    </div>
+                </div>
+                <div class="compare-row-right">
+                    <div class="converted-group">
+                        <span class="compare-converted">${convertedAmount}</span>
+                        <span class="compare-rate">1 ${currentFromCurrency} = ${rate.toFixed(4)} ${code}</span>
+                    </div>
+                    <button class="pin-btn ${isPinned ? 'active' : ''}" data-pair="${pairString}">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="22px" viewBox="0 -960 960 960" width="22px" fill="currentColor">
+                            <path d="M333.33-259 480-347l146.67 89-39-166.67 129-112-170-15L480-709l-66.67 156.33-170 15 129 112.34-39 166.33ZM233-120l65-281L80-590l288-25 112-265 112 265 288 25-218 189 65 281-247-149-247 149Zm247-353.33Z"/>
+                        </svg>
+                    </button>
+                </div>
+            `;
+
+                row.querySelector('.pin-btn').addEventListener('click', (e) => {
+                    const btn = e.currentTarget;
+                    const pair = btn.getAttribute('data-pair');
+
+                    if (favorites.includes(pair)) {
+                        favorites = favorites.filter(f => f !== pair);
+                        btn.classList.remove('active');
+                        row.classList.remove('pinned');
+                        showToast(`${pair}  removed from Favorites!`, 'error');
+                    } else {
+                        favorites.push(pair);
+                        btn.classList.add('active');
+                        row.classList.add('pinned');
+                        showToast(`${pair}  Added to Favorites!`, 'success');
+                    }
+
+                    localStorage.setItem('fx_favorites', JSON.stringify(favorites));
+                    updateBadges();
+                });
+
+                compareListEl.appendChild(row);
+            });
+        } catch (error) {
+            console.error("Failed to fetch compare rates:", error);
+            compareListEl.innerHTML = '<p style="color: var(--red-500); text-align: center;">Failed to load rates.</p>';
+        }
+    }
 
 
 

@@ -814,3 +814,102 @@ main {
 .view.active-view {
     display: flex;
 }
+
+.compare-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    background: var(--neutral-700);
+    border: 1px solid var(--neutral-600);
+    border-radius: 10px;
+    height: auto;
+    padding: 20px 20px;
+
+}
+
+.compare-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+
+}
+
+.compare-header #title,
+#total-pairs {
+    color: var(--neutral-200);
+    font-size: 14px;
+    line-height: 120%;
+    letter-spacing: 1px;
+}
+
+.compare-header h3 #compare-base-amount,
+.compare-header h3 #compare-base-currency {
+    color: var(--neutral-50);
+    font-size: 16px;
+    line-height: 120%;
+
+}
+
+.compare-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+
+}
+
+.compare-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 12px;
+    border: 1px solid var(--neutral-600);
+    border-radius: 10px;
+    background: var(--neutral-700);
+}
+
+.compare-row-right {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-6);
+}
+
+.converted-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    /* Aligns the numbers to the right */
+    gap: 2px;
+}
+
+.compare-converted {
+    font-size: 1.6rem;
+    font-weight: 700;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--neutral-100);
+    line-height: 1.1;
+}
+
+.compare-rate {
+    font-size: 0.75rem;
+    color: var(--neutral-500);
+    font-family: 'JetBrains Mono', monospace;
+}
+
+.pin-btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: var(--neutral-500);
+    transition: transform 0.2s, color 0.2s;
+    padding: 0;
+}
+
+.pin-btn:hover {
+    transform: scale(1.2);
+    color: var(--neutral-100);
+}
+
+.pin-btn.active {
+    color: var(--lime-500);
+}
