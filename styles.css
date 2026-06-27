@@ -367,6 +367,7 @@ main {
     display: flex;
     align-items: center;
     gap: var(--spacing-200);
+    cursor: pointer;
 
 }
 
@@ -424,8 +425,10 @@ main {
     color: var(--neutral-50);
     width: fit-content;
     border-radius: var(--radius-8);
+    cursor: pointer;
 
 }
+
 
 .currency-select-btn .flag {
     width: 20px;
@@ -460,7 +463,7 @@ main {
 
 .action-btn {
     border: 1px solid;
-    padding: var(--spacing-25) var(--spacing-50);
+    padding: 8px 12px;
     border-radius: var(--radius-16);
     display: flex;
     align-items: center;
@@ -483,8 +486,8 @@ main {
 }
 
 .swap-btn {
-    width: 48px;
-    height: 48px;
+    width: 40px;
+    height: 40px;
     background: var(--neutral-600);
     border: 1px solid var(--neutral-500);
     border-radius: 8px;
@@ -492,7 +495,7 @@ main {
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: transform 0.2s ease;
+    transition: transform 1.2s ease;
 }
 
 .swap-btn:hover {
@@ -616,6 +619,7 @@ main {
     flex-direction: column;
     overflow: hidden;
     margin-top: var(--spacing-2);
+
 }
 
 .currency-dropdown.align-right {
@@ -669,26 +673,33 @@ main {
 }
 
 
-.currency-list-container h4 {
+.currency-list-container .heading {
     color: var(--neutral-200);
     font-size: 0.7rem;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-
     padding: 8px 8px;
     border-bottom: 1px solid var(--neutral-500);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-.currency-list-container h4:first-child {
+.currency-list-container .heading h4:first-child {
     margin-top: var(--spacing-2);
 }
 
+#counter.popular {
+    display: flex;
+}
+
+#counter.other {
+    display: flex;
+}
 
 .currency-row {
     display: flex;
-
-
     border-radius: var(--radius-8);
     cursor: pointer;
     gap: 8px;
@@ -709,6 +720,7 @@ main {
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-top: 7px;
 }
 
 .currency-info {
@@ -736,11 +748,14 @@ main {
     font-weight: bold;
     font-size: 1rem;
     display: none;
+    margin-right: var(--spacing-300);
+    align-items: center;
+    margin-top: 5%;
 }
 
 .currency-row.selected .check-icon {
     display: block;
-    /* Shows the green check */
+    margin-left: auto;
 }
 
 /* --- Chart Container & Header --- */
@@ -963,6 +978,17 @@ main {
 }
 
 /* --- Favorites View --- */
+.favorites-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    background: var(--neutral-700);
+    border: 1px solid var(--neutral-600);
+    border-radius: 10px;
+    height: auto;
+    padding: 20px 20px;
+}
+
 .favorites-header {
     display: flex;
     justify-content: space-between;
@@ -973,33 +999,38 @@ main {
 }
 
 .favorites-header h3 {
-    font-size: 1.2rem;
-    color: var(--neutral-500);
+    font-size: 16px;
+    line-height: 120%;
+    color: var(--neutral-50);
     letter-spacing: 1px;
     text-transform: uppercase;
     font-weight: 500;
 }
 
 .favorites-count {
-    font-size: 1rem;
-    color: var(--neutral-100);
+    font-size: 12px;
+    color: var(--neutral-50);
     font-weight: 700;
     font-family: 'JetBrains Mono', monospace;
+    line-height: 120%;
+    opacity: 70%;
 }
 
 .favorites-list {
     display: flex;
     flex-direction: column;
-    gap: var(--spacing-2);
+    gap: 9px;
+
 }
 
 .favorite-row {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background-color: var(--neutral-700);
+    background-color: var(--neutral-600);
+    border: 1px solid var(--neutral-500);
     border-radius: var(--radius-12);
-    padding: var(--spacing-4) var(--spacing-6);
+    padding: 16px 12px;
     cursor: pointer;
     transition: background-color 0.2s ease;
 }
@@ -1012,36 +1043,38 @@ main {
 .fav-pair {
     display: flex;
     align-items: center;
-    gap: var(--spacing-3);
+    gap: 8px;
     font-family: 'JetBrains Mono', monospace;
-    font-size: 1.1rem;
+    font-size: 14px;
     font-weight: 700;
     color: var(--neutral-100);
     width: 150px;
 }
 
 .fav-separator {
-    color: var(--neutral-500);
+    color: var(--neutral-400);
     font-weight: 400;
 }
 
 .fav-data {
     flex: 1;
     display: flex;
+    flex-direction: column;
     justify-content: flex-end;
-    align-items: center;
-    gap: var(--spacing-6);
+    align-items: flex-end;
+    margin-right: 14px;
+
 }
 
 .fav-rate {
-    font-size: 1.2rem;
+    font-size: 16px;
     font-weight: 700;
     font-family: 'JetBrains Mono', monospace;
     color: var(--neutral-100);
 }
 
 .fav-change {
-    font-size: 0.9rem;
+    font-size: 10px;
     font-weight: 700;
     font-family: 'JetBrains Mono', monospace;
     width: 80px;
@@ -1061,12 +1094,172 @@ main {
     border: none;
     cursor: pointer;
     color: #facc15;
-    /* Yellow star */
     display: flex;
     align-items: center;
+    justify-content: center;
     transition: transform 0.2s;
+    border: 1px solid var(--lime-500);
+    border-radius: 10px;
+    width: 28px;
+    height: 28px;
 }
 
 .unpin-btn:hover {
     transform: scale(1.2);
+}
+
+/*=========================
+ --- Log View --- 
+ ======================================================*/
+.log-conatiner {
+    background: var(--neutral-700);
+    border: 1px solid var(--neutral-600);
+    border-radius: 10px;
+    height: auto;
+    padding: 20px 20px;
+}
+
+.log-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-6);
+    padding-bottom: var(--spacing-4);
+    border-bottom: 1px solid var(--neutral-700);
+}
+
+.log-header h3 {
+    font-size: 16px;
+    color: var(--neutral-50);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-weight: 500;
+    line-height: 120%;
+}
+
+.log-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.log-count {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--neutral-100);
+    font-family: 'JetBrains Mono', monospace;
+    line-height: 120%;
+    opacity: 70%;
+    gap: 4px;
+    display: flex;
+    flex-direction: row;
+}
+
+.clear-all-btn {
+    background: var(--neutral-600);
+    border: 1px solid var(--neutral-400);
+    color: var(--neutral-100);
+    padding: 6px 12px;
+    border-radius: var(--radius-8);
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: all 0.2s;
+    display: flex;
+}
+
+.clear-all-btn:hover {
+    border-color: var(--red-500);
+    background: rgba(239, 68, 68, 0.1);
+}
+
+.log-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-2);
+    margin-top: 20px;
+    gap: 12px;
+}
+
+.log-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: var(--neutral-600);
+    border: 1px solid var(--neutral-500);
+    border-radius: var(--radius-12);
+    padding: 16px 12px;
+
+}
+
+.log-time {
+    font-size: 12px;
+    color: var(--neutral-200);
+    font-family: 'JetBrains Mono', monospace;
+    width: 60px;
+    line-height: 120%;
+    opacity: 70%;
+}
+
+.log-details {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-6);
+    flex: 1;
+    margin-left: var(--spacing-4);
+}
+
+.log-pair {
+    font-size: 12px;
+    line-height: 120%;
+    opacity: 100%;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    color: var(--neutral-100);
+    width: 120px;
+}
+
+.log-amounts {
+    display: flex;
+    gap: var(--spacing-4);
+    color: var(--neutral-500);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    line-height: 120%;
+    opacity: 90%;
+    flex: 1;
+    justify-content: flex-end;
+    margin-right: 15px;
+}
+
+.log-amounts .send-amt {
+    color: var(--neutral-100);
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 120%;
+    opacity: 100%;
+}
+
+.log-amounts .recv-amt {
+    color: var(--lime-500);
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 120%;
+    opacity: 100%;
+}
+
+.delete-log-btn {
+    background: transparent;
+    border: 1px solid var(--neutral-500);
+    cursor: pointer;
+    color: var(--neutral-50);
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    transition: color 0.2s;
+    border-radius: var(--radius-12);
+}
+
+.delete-log-btn:hover {
+    color: var(--red-500);
 }

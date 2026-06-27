@@ -125,10 +125,7 @@
                                 </svg> Favorite
                             </button>
                             <button class="action-btn log-btn">
-                                <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960"
-                                    width="20px" fill="#000000">
-                                    <path d="M444-144v-300H144v-72h300v-300h72v300h300v72H516v300h-72Z" />
-                                </svg>Log Conversion
+                                Log Conversion
                             </button>
 
                         </div>
@@ -141,12 +138,19 @@
                         </div>
 
                         <div class="currency-list-container">
-                            <h4>POPULAR</h4>
+                            <div class="heading">
+                                <h4>POPULAR</h4>
+                                <span id="counter">0</span>
+
+                            </div>
+
                             <div class="currency-group" id="popular-currencies">
                                 <!-- Dynamic content goes here -->
                             </div>
-
-                            <h4>OTHER CURRENCIES</h4>
+                            <div class="heading">
+                                <h4>OTHER CURRENCIES</h4>
+                                <span id="counter">0</span>
+                            </div>
                             <div class="currency-group" id="other-currencies">
                                 <!-- Dynamic content goes here -->
                             </div>
@@ -227,20 +231,33 @@
 
             <!-- Favorites section -->
             <section id="favorites-view" class="view">
-                <div class="favorites-header">
-                    <h3>CURRENCY PAIRS</h3>
-                    <span class="favorites-count">0 FAVORITES</span>
+                <div class="favorites-container">
+                    <div class="favorites-header">
+                        <h3>PINNED PAIRS</h3>
+                        <span class="favorites-count">0 FAVORITES</span>
+                    </div>
+                    <div class="favorites-list" id="favorites-list">
+                        <!-- Dynamic favorite rows will go here -->
+                    </div>
                 </div>
-                <div class="favorites-list" id="favorites-list">
-                    <!-- Dynamic favorite rows will go here -->
-                </div>
+
             </section>
 
             <!-- Log section -->
             <section id="log-view" class="view">
-                <div class="empty-state" style="text-align: center; padding: 40px; color: var(--neutral-500);">
-                    <h3>LOG</h3>
-                    <p>Click the "Log Conversion" button to save your calculations here!</p>
+                <div class="log-conatiner">
+                    <div class="log-header">
+                        <h3>CONVERSION LOG</h3>
+                        <div class="log-controls">
+                            <span class="log-count"><span id="log-count-num"></span>LOGGED</span>
+                            <button class="clear-all-btn" id="clear-all-logs">CLEAR ALL</button>
+                        </div>
+                    </div>
+                    <div class="log-list" id="log-list">
+                        <!-- Dynamic log entries will go 
+                     here -->
+
+                    </div>
                 </div>
             </section>
 

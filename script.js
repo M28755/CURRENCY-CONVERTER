@@ -1,5 +1,8 @@
 const API_BASE_URL = "https://api.frankfurter.dev/v2"
 
+
+
+
 document.addEventListener('DOMContentLoaded', () => {
 
 
@@ -108,6 +111,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
             await fetchLiveRate()
             await fetchHistoryData()
+            await fetchCompareRates()
+            await renderFavorites()
+            renderLogs()
 
 
         } catch (error) {
@@ -126,6 +132,9 @@ document.addEventListener('DOMContentLoaded', () => {
         otherList.innerHTML = '';
 
         const lowerCaseFilter = filter.toLowerCase();
+
+
+
 
         Currencies.forEach((currency) => {
             const matchesCode = currency.code.toLowerCase().includes(lowerCaseFilter);
@@ -171,7 +180,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 otherList.appendChild(row)
             }
 
+
         })
+
+        const counters = document.querySelectorAll('#counter');
+        if (counters.length >= 2) {
+            counters[0].textContent = popularList.children.length;
+            counters[1].textContent = otherList.children.length;
+        }
+
+
+
 
 
     }
@@ -293,6 +312,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         //compareBaseCurrencyEl.textContent = currentFromCurrency;
         fetchCompareRates();
+        renderLogs();
+        renderFavorites();
+
     });
 
 
@@ -559,6 +581,7 @@ document.addEventListener('DOMContentLoaded', () => {
         logs.push(logEntry)
         localStorage.setItem('fx_logs', JSON.stringify(logs))
         updateBadges();
+        renderLogs();
         showToast(`Added ${currentFromCurrency}/${currentToCurrency} to logs!`)
     })
 
@@ -594,6 +617,12 @@ document.addEventListener('DOMContentLoaded', () => {
             if (targetId === 'favorites-view') {
                 renderFavorites();
             }
+            if (targetId === 'logs-view') {
+                renderLogs();
+            }
+            if (targetId === 'compare-view') {
+                fetchCompareRates();
+            }
         });
     });
 
@@ -602,7 +631,7 @@ document.addEventListener('DOMContentLoaded', () => {
     ===========================*/
     const compareListEl = document.getElementById('compare-list');
 
-    const compareTargets = ['EUR', 'GBP', 'JPY', 'AUD', 'CAD', 'CHF', 'CNY', 'INR'];
+    const compareTargets = ['KES', 'EUR', 'GBP', 'JPY', 'AUD', 'CAD', 'CHF', 'CNY', 'INR'];
     const TotalPairs = document.getElementById('total-pairs-value')
 
     async function fetchCompareRates() {
@@ -707,12 +736,21 @@ document.addEventListener('DOMContentLoaded', () => {
         const favoriteCount = document.querySelector('.favorites-count')
         const favoritesList = document.querySelector('.favorites-list')
 
+        favoriteCount.textContent = `${favorites.length} FAVORITES`;
+
+        if (favorites.length === 0) {
+            favoritesList.innerHTML = '<h3 style="color: var(--neutral-500); text-align: center; padding: 40px;">Click the star icon on a pair to add it to your favorites.</h3>';
+            return;
+        }
+
+        favoritesList.innerHTML = '<h3 style="color: var(--neutral-500); text-align: center; padding: 40px;">Loading live rates...</h3>';
+
         const pairs = favorites.map(f => {
             const [currentFromCurrency, currentToCurrency] = f.split('/')
             return { currentFromCurrency, currentToCurrency }
         })
 
-        console.log(pairs);
+        //  console.log(pairs);
 
         //lets get yesterday's date
         const today = new Date();
@@ -767,7 +805,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 row.innerHTML = `
                 <div class="fav-pair">
                     <span class="fav-base">${from}</span>
-                    <span class="fav-separator">-</span>
+                    <span class="fav-separator"><i class="fa fa-arrow-right"></i></span>
                     <span class="fav-quote">${to}</span>
                 </div>
                 <div class="fav-data">
@@ -794,7 +832,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     updateButtonUI(toBtn, to);
 
                     fetchLiveRate();
-                    fetchHistoryData();
+                    fetchHistoryData(); 76432
                     fetchCompareRates();
 
                     // Switch back to the HISTORY tab
@@ -819,12 +857,113 @@ document.addEventListener('DOMContentLoaded', () => {
 
         } catch (error) {
 
-            console.error("Failed to fetch favorites:", error)
+            console.error("Error rendering favorites:", error);
+            listEl.innerHTML = '<p style="color: var(--red-500); text-align: center;">Failed to load favorite rates.</p>';
 
         }
 
     }
 
+    function getRelativeTime(dateStrin) {
+        const date = new Date(dateStrin)
+        const now = new Date()
+        const dateDiffer = Math.round((now - date) / 60000)
+
+        console.log(dateDiffer, 'dateDiffer')
+        if (dateDiffer < 1) {
+            return 'Now'
+        }
+        if (dateDiffer < 60) {
+            return `${dateDiffer}M`
+        }
+        const hourDiffer = Math.round(dateDiffer / 60)
+        if (hourDiffer < 24) {
+            return `${hourDiffer}H`
+        }
+        const dayDiffer = Math.round(hourDiffer / 24)
+        if (dayDiffer < 30) {
+            return `${dayDiffer}D`
+        }
+
+
+        return date.toLocaleDateString('en-Us', {
+            day: '2-digit',
+            month: 'short',
+            year: 'numeric'
+        });
+    }
+    const logCount = document.getElementById('log-count-num');
+    const deleteBtn = document.querySelector('.clear-all-btn');
+    const logList = document.getElementById('log-list');
+    function renderLogs() {
+
+
+        logList.innerHTML = ``;
+        logCount.textContent = logs.length;
+
+        console.log(logs, 'logs');
+
+        // console.log(logCount);
+        // logCount.textContent = logs.length > 0 ? logs.length : `0 `;
+
+        if (logs.length === 0) {
+            logCount.textContent = logs.length > 0 ? logs.length : `0 `;
+            deleteBtn.style.display = 'none';
+            logList.innerHTML = `<h3 style="color: var(--neutral-500); text-align: center; padding: 40px;">NO DATA AVAILABLE</h3>`;
+            return;
+        }
+        deleteBtn.style.display = 'flex';
+
+        [...logs].reverse().forEach((log, index) => {
+            // Calculate the actual index in the original array for deletion
+            const actualIndex = logs.length - 1 - index;
+
+            const row = document.createElement('div');
+            row.className = 'log-row';
+            row.innerHTML = `
+            <span class="log-time">${getRelativeTime(log.date)}</span>
+            <div class="log-details">
+                <span class="log-pair">${log.from} → ${log.to}</span>
+                <div class="log-amounts">
+                    <span class="send-amt">${parseFloat(log.amount).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} </span>
+                    <span>→</span>
+                    <span class="recv-amt">${parseFloat(log.result).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} </span>
+                </div>
+            </div>
+            <button class="delete-log-btn" data-index="${actualIndex}" title="Delete log">
+                <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor">
+                    <path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/>
+                </svg>
+            </button>
+        `;
+
+            row.querySelector('.delete-log-btn').addEventListener('click', () => {
+                const index = row.querySelector('.delete-log-btn').dataset.index;
+                logs.splice(index, 1);
+                localStorage.setItem('fx_logs', JSON.stringify(logs));
+                showToast(`${log.from} → ${log.to}  removed from Logs!`, `error`);
+                renderLogs();
+                updateBadges();
+            })
+
+
+            logList.appendChild(row)
+
+        })
+        deleteBtn.addEventListener('click', () => {
+            if (logs.length === 0) return;
+
+            logs = [];
+
+            localStorage.setItem('fx_logs', JSON.stringify(logs));
+            showToast('All Logs Cleared', 'error');
+            renderLogs();
+            updateBadges();
+
+        })
+
+
+    }
 
 
 
