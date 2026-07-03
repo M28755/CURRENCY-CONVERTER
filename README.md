@@ -145,12 +145,12 @@ Defined in `styles.css` using CSS custom properties:
 
 ##  Four-Phase Roadmap
 
-| Phase | Status          | Description                              |
-|-------|-----------------|------------------------------------------|
-| 1     | ? Done         | Planning & design system mapping         |
-| 2     | ? Done         | Core frontend (HTML + CSS)               |
-| 3     | ? Done         | JavaScript logic & API integration       |
-| 4     | ?? In Progress  | Polish, animations & testing             |
+| Phase | Status | Description           |
+|-------|--------|-----------------------|
+| 1     | Done   | Planning & design system  &  mapping           |
+| 2     | Done   | Core frontend (HTML + CSS)                 |
+| 3     | Done   | JavaScript logic & API integration         |
+| 4     | Done   | Polish, animations & testing               |
 
 ---
 
@@ -165,14 +165,4 @@ No build step required  pure HTML/CSS/JS.
 
 ---
 
-##  Algorithm Reference
 
-See [`Algorithm.md`](./Algorithm.md) for a full pseudocode walkthrough of:
-- App state initialisation
-- API fetch flow
-- Currency dropdown rendering & selection
-- Live rate fetching & conversion calculation
-- Statistics update logic
-- 30-day history fetch & Chart.js rendering
-- Swap functionality
-- Flag emoji generation
