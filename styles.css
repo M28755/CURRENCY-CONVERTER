@@ -295,34 +295,7 @@ body {
     background: var(--neutral-700);
 }
 
-.live-markets {
-    display: flex;
-    align-items: center;
-    justify-content: space-evenly;
-    background: var(--lime-500);
-    padding: 2px;
-    color: var(--neutral-900);
-    width: 157px;
-    height: 20px;
 
-
-}
-
-.live-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: var(--neutral-900);
-
-}
-
-.ticker-item {
-    background: var(--neutral-700);
-    width: 100%;
-    height: 20px;
-    font-weight: 500;
-    color: var(--neutral-200);
-}
 
 main {
     display: flex;
@@ -1357,4 +1330,98 @@ input[type=number] {
     height: 100%;
     object-fit: cover;
     border-radius: 50%;
+}
+
+/* --- Live Markets Ticker --- */
+.ticker-wrapper {
+    display: flex;
+    align-items: center;
+    background-color: var(--neutral-900);
+    border: 1px solid var(--neutral-700);
+    border-radius: var(--radius-full);
+    overflow: hidden;
+    /* Hides the scrollbar */
+    padding: 8px 0;
+    position: relative;
+}
+
+.live-badge {
+    background: #facc15;
+    /* Yellow-400 */
+    color: #000;
+    font-size: 0.75rem;
+    font-weight: 800;
+    padding: 4px 12px;
+    margin-left: 16px;
+    border-radius: var(--radius-4);
+    z-index: 2;
+    flex-shrink: 0;
+}
+
+
+.live-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--neutral-900);
+
+}
+
+
+.ticker-track {
+    display: flex;
+    gap: 48px;
+    padding-left: 48px;
+    white-space: nowrap;
+    animation: marquee 40s linear infinite;
+
+}
+
+
+.ticker-wrapper:hover .ticker-track {
+    animation-play-state: paused;
+}
+
+.ticker-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    border-left: 1px solid var(--neutral-100);
+}
+
+.ticker-pair {
+    font-weight: 700;
+    color: var(--neutral-200);
+}
+
+.ticker-rate {
+    color: var(--neutral-500);
+}
+
+.ticker-change {
+    font-weight: 700;
+    font-size: 0.8rem;
+}
+
+.ticker-change.positive {
+    color: var(--green-500);
+}
+
+.ticker-change.negative {
+    color: var(--red-500);
+}
+
+
+@keyframes marquee {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(-50%);
+    }
+
+
 }

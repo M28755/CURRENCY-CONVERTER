@@ -169,6 +169,7 @@ async function ApiFetch() {
         await fetchCompareRates()
         await renderFavorites()
         renderLogs()
+        await renderLiveTickers()
 
 
     } catch (error) {
@@ -265,6 +266,7 @@ async function handleCurrencySelect(currency) {
     await fetchLiveRate()
     await fetchHistoryData()
     await fetchCompareRates()
+    await renderLiveTickers()
 
 
 }
@@ -392,6 +394,7 @@ swapBtn.addEventListener('click', () => {
     fetchCompareRates();
     renderLogs();
     renderFavorites();
+    renderLiveTickers();
 
 });
 
@@ -1108,11 +1111,110 @@ function renderLogs() {
 
     })
 
+}
+/* LIVE MARKET */
+const tickTracker = document.getElementById('ticker-track');
+async function renderLiveTickers() {
+    const basePairs = [
+        { from: 'EUR', to: 'JPY' },
+        { from: 'USD', to: 'JPY' },
+        { from: 'GBP', to: 'USD' },
+        { from: 'EUR', to: 'USD' },
+        { from: 'AUD', to: 'USD' },
+        { from: 'USD', to: 'CHF' },
+        { from: 'USD', to: 'CAD' },
+        { from: 'NZD', to: 'USD' }
+    ];
 
+    const tickerPair = [
+        {
+            from: currentFromCurrency,
+            to: currentToCurrency
+        },
+        ...basePairs.filter(p => {
+            return !(p.from === currentFromCurrency && p.to === currentToCurrency);
+        })
+    ];
+    // console.log(tickerPair, 'tickerPair')
+
+    const today = new Date();
+    const past = new Date(today)
+    past.setDate(today.getDate() - 7);
+
+
+    const todayString = today.toISOString().split('T')[0];
+    const pastString = past.toISOString().split('T')[0];
+
+
+    try {
+        const promises = tickerPair.map(p => {
+
+            return fetch(`${API_BASE_URL}/rates?from=${pastString}&to=${todayString}&base=${p.from}&quotes=${p.to}`)
+                .then(res => res.json())
+                .then(d => {
+                    if (!Array.isArray(d) || d.length === 0) return null;
+
+                    const latest = d[d.length - 1].rate;
+                    const prev = d.length > 1 ? d[d.length - 2].rate : latest;
+
+                    return {
+                        from: p.from,
+                        to: p.to,
+                        liveRate: latest,
+                        oldRate: prev
+                    };
+                })
+                .catch(err => {
+                    console.error("Error fetching pair:", p, err);
+                    return null;
+                });
+        });
+
+        const results = await Promise.all(promises);
+
+        const validResults = results.filter(r => r !== null);
+        // console.log(validResults, 'results');
+
+        let html = '';
+
+        validResults.forEach(result => {
+
+            if (!result) return;
+
+            const change = result.liveRate - result.oldRate;
+
+            const percentageChange = ((change / result.oldRate) * 100).toFixed(2);
+            const isPositive = change >= 0;
+
+            const isActive = (result.from === currentFromCurrency && result.to === currentToCurrency);
+
+            html += `
+             <div class="ticket-item">
+              <span class="ticker-pair" style="${isActive ? 'color: var(--lime-500);' : ''}">${result.from}/${result.to}</span>
+                    <span class="ticker-rate">${result.liveRate.toFixed(4)}</span>
+                    <span class="ticker-change ${isPositive ? 'positive' : 'negative'}">
+                        ${isPositive ? '▲' : '▼'} ${Math.abs(percentageChange).toFixed(2)}%
+                    </span>
+             
+
+             </div>
+             
+             `
+
+
+        })
+
+        tickTracker.innerHTML = html + html;
+
+
+    } catch (error) {
+        console.error("Failed to load ticker data:", error);
+    }
 }
 
 
 
 ApiFetch();
+
 
 
