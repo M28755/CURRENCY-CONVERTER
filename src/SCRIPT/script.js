@@ -700,7 +700,7 @@ function savefavorite() {
 
     if (!favorites.includes(pair)) {
         favorites.push(pair);
-        localStorage.setItem('fx_favorites', JSON.stringify(favorites));
+        localStorage.setItem('favoriteCurrencies', JSON.stringify(favorites));
         updateBadges();
         renderFavorites()
         showToast(`Added ${pair} to Favorites!`);
@@ -724,7 +724,7 @@ document.querySelector('.log-btn').addEventListener('click', () => {
             date: new Date().toISOString()
         };
         logs.push(logEntry)
-        localStorage.setItem('fx_logs', JSON.stringify(logs))
+        localStorage.setItem('logs', JSON.stringify(logs))
         updateBadges();
         renderLogs();
         showToast(`Added ${currentFromCurrency}/${currentToCurrency} to logs!`)
@@ -847,7 +847,7 @@ async function fetchCompareRates() {
                         showToast(`${pair}  Added to Favorites!`, 'success');
                     }
 
-                    localStorage.setItem('fx_favorites', JSON.stringify(favorites));
+                    localStorage.setItem('favoriteCurrencies', JSON.stringify(favorites));
                     updateBadges();
                 });
 
@@ -985,7 +985,7 @@ async function renderFavorites() {
             row.querySelector('.unpin-btn').addEventListener('click', (e) => {
                 e.stopPropagation();
                 favorites = favorites.filter(f => f !== `${from}/${to}`);
-                localStorage.setItem('fx_favorites', JSON.stringify(favorites));
+                localStorage.setItem('favoriteCurrencies', JSON.stringify(favorites));
                 showToast(`${from} & ${to}  removed from Favorites!`, `error`);
                 updateBadges();
                 renderFavorites();
@@ -1089,7 +1089,7 @@ function renderLogs() {
         row.querySelector('.delete-log-btn').addEventListener('click', () => {
             const index = row.querySelector('.delete-log-btn').dataset.index;
             logs.splice(index, 1);
-            localStorage.setItem('fx_logs', JSON.stringify(logs));
+            localStorage.setItem('logs', JSON.stringify(logs));
             showToast(`${log.from} → ${log.to}  removed from Logs!`, `error`);
             renderLogs();
             updateBadges();
@@ -1104,7 +1104,7 @@ function renderLogs() {
 
         logs = [];
 
-        localStorage.setItem('fx_logs', JSON.stringify(logs));
+        localStorage.setItem('logs', JSON.stringify(logs));
         showToast('All Logs Cleared', 'error');
         renderLogs();
         updateBadges();
