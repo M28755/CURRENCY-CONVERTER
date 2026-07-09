@@ -94,7 +94,7 @@ tabButtons.forEach(button => {
         const target = button.getAttribute('data-target')
 
         const correspondingOption = Array.from(mobileNavSelect.options).find(option => {
-            option.getAttribute('data-target') === target
+            return option.getAttribute('data-target') === target
         })
         if (correspondingOption) {
             mobileNavSelect.value = correspondingOption.value;
